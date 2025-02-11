@@ -96,125 +96,131 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="w-full max-w-7xl mx-auto px-2 py-4 mt-4 bg-red-300">
+      <div className="w-full max-w-7xl mx-auto px-2 py-4 mt-4 bg-slate-300 border-none rounded-md">
         <div className="flex items-center justify-center">
-          <section className={`flex-1 bg-blue-400 p-3 flex-col gap-4 ${
+          <section className={`flex-1 bg-sky-200 p-2 flex-col gap-2 shadow-md rounded-md mx-1 ${
               isVisible ? "hidden" : "flex"
             } md:flex  `}>
-            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-3">
-              <p className="text-center">Monday </p>
-              <p className="text-center">03/04/2025 </p>
+            <div className="relative flex flex-col items-center justify-center font-medium border rounded-md border-blue-300 bg-white p-3">
+              <div className="absolute top-0 left-0 w-full h-1 bg-red-500 rounded-t-md"></div>
+              <p className="text-center">Monday</p>
+              <p className="text-center">03/04/2025</p>
             </div>
-            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5">
+            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5 font-medium hover:bg-sky-100 duration-300">
               <p>08:00</p>
               <button className="text-sm text-green-700">OPEN</button>
             </div>
-            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5">
+            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5 font-medium hover:bg-sky-100 duration-300">
               <p>08:30</p>
               <button className="text-sm text-red-700">CLOSED</button>
             </div>
-            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5">
+            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5 font-medium hover:bg-sky-100 duration-300">
               <p>09:00</p>
               <button className="text-sm text-blue-700">SCHEDULED</button>
             </div>
           </section>
 
-          <section className={`flex-1 bg-blue-400 p-3 flex-col gap-4 ${
+          <section className={`flex-1 bg-sky-200 p-2 flex-col gap-2 shadow-md rounded-md mx-1 ${
             isVisible ? "hidden" : "flex"
           } md:flex  `}>
-            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-3">
+            <div className="relative flex flex-col items-center justify-center font-medium border rounded-md border-blue-300 bg-white p-3">
+              <div className="absolute top-0 left-0 w-full h-1 bg-orange-500 rounded-t-md"></div>
               <p className="text-center">Tuesday </p>
               <p className="text-center">04/04/2025 </p>
             </div>
-            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5">
+            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5 font-medium hover:bg-sky-100 duration-300">
               <p>08:00</p>
               <button className="text-sm text-green-700">OPEN</button>
             </div>
-            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5">
+            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5 font-medium hover:bg-sky-100 duration-300">
               <p>08:30</p>
               <button className="text-sm text-green-700">OPEN</button>
             </div>
-            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5">
+            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5 font-medium hover:bg-sky-100 duration-300">
               <p>09:00</p>
               <button className="text-sm text-blue-700">SCHEDULED</button>
             </div>
           </section>
 
-          <section className={`flex-1 bg-blue-400 p-3 flex-col gap-4 ${
+          <section className={`flex-1 bg-sky-200 p-2 flex-col gap-2 shadow-md rounded-md mx-1 ${
             isVisible ? "hidden" : "flex"
           } md:flex  `}>
-            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-3">
+            <div className="relative flex flex-col items-center justify-center font-medium border rounded-md border-blue-300 bg-white p-3">
+              <div className="absolute top-0 left-0 w-full h-1 bg-amber-500 rounded-t-md"></div>
               <p className="item-center">Wednesday </p>
               <p className="item-center">05/04/2025 </p>
             </div>
-            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5">
+            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5 font-medium hover:bg-sky-100 duration-300">
               <p>08:00</p>
               <button className="text-sm text-green-700">OPEN</button>
             </div>
-            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5">
+            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5 font-medium hover:bg-sky-100 duration-300">
               <p>08:30</p>
               <button className="text-sm text-green-700">OPEN</button>
             </div>
-            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5">
+            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5 font-medium hover:bg-sky-100 duration-300">
               <p>09:00</p>
               <button className="text-sm text-green-700">OPEN</button>
             </div>
           </section>
 
-          <section className={`flex-1 bg-blue-400 p-3 flex-col gap-4 ${
+          <section className={`flex-1 bg-sky-200 p-2 flex-col gap-2 shadow-md rounded-md mx-1 ${
             isVisible ? "flex" : "hidden"
           } md:flex  `}>
-            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-3">
+            <div className="relative flex flex-col items-center justify-center font-medium border rounded-md border-blue-300 bg-white p-3">
+              <div className="absolute top-0 left-0 w-full h-1 bg-yellow-500 rounded-t-md"></div>
               <p className="text-center">Thursday </p>
               <p className="text-center">06/04/2025 </p>
             </div>
-            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5">
+            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5 font-medium hover:bg-sky-100 duration-300">
               <p>08:00</p>
               <button className="text-sm text-green-700">OPEN</button>
             </div>
-            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5">
+            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5 font-medium hover:bg-sky-100 duration-300">
               <p>08:30</p>
               <button className="text-sm text-green-700">OPEN</button>
             </div>
-            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5">
+            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5 font-medium hover:bg-sky-100 duration-300">
               <p>09:00</p>
               <button className="text-sm text-green-700">OPEN</button>
             </div>
           </section>
 
-          <section className={`flex-1 bg-blue-400 p-3 flex-col gap-4 ${
+          <section className={`flex-1 bg-sky-200 p-2 flex-col gap-2 shadow-md rounded-md mx-1 ${
             isVisible ? "flex" : "hidden"
           } md:flex  `}>
-            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-3">
-            <p className="text-center">Friday </p>
-            <p className="text-center">07/04/2025 </p>
+            <div className="relative flex flex-col items-center justify-center font-medium border rounded-md border-blue-300 bg-white p-3">
+              <div className="absolute top-0 left-0 w-full h-1 bg-red-300 rounded-t-md"></div>
+              <p className="text-center">Friday </p>
+              <p className="text-center">07/04/2025 </p>
             </div>
-            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5">
+            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5 font-medium hover:bg-sky-100 duration-300">
               <p>08:00</p>
               <button className="text-sm text-red-700">CLOSED</button>
             </div>
-            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5">
+            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5 font-medium hover:bg-sky-100 duration-300">
               <p>08:30</p>
               <button className="text-sm text-red-700">CLOSED</button>
             </div>
-            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5">
+            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5 font-medium hover:bg-sky-100 duration-300">
               <p>09:00</p>
               <button className="text-sm text-red-700">CLOSED</button>
             </div>
           </section>
 
-          <section className={`flex-1 bg-blue-400 p-3 flex-col gap-4 ${
+          <section className={`flex-1 bg-sky-200 p-2 flex-col gap-2 shadow-md rounded-md mx-1 ${
             isVisible ? "flex" : "hidden"
           } md:flex  `}>
-            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-3">
+            <div className="relative flex flex-col items-center justify-center font-medium border rounded-md border-blue-300 bg-white p-3">
+              <div className="absolute top-0 left-0 w-full h-1 bg-orange-200 rounded-t-md"></div>
               <p className="text-center">Saturday </p>
               <p className="text-center">08/04/2025 </p>
             </div>
-            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5">
+            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5 font-medium hover:bg-sky-100 duration-300">
               <p>08:00</p>
               <button className="text-sm text-red-700">CLOSED</button>
             </div>
-            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5">
+            <div className="flex flex-col items-center justify-center border rounded-md border-blue-300 bg-white p-5 font-medium hover:bg-sky-100 duration-300">
               <p>08:30</p>
               <button className="text-sm text-red-700">CLOSED</button>
             </div>
