@@ -5,6 +5,7 @@ import { useState } from "react"
 export default function Home() {
   const [page, setPage] = useState(1)
   const [isVisible, setIsVisible] = useState(false)
+  const [schedule, setSchedule] = useState<Record<string, { totalTimes: number; times: { time: string; status: number }[] }>>({});
 
   function alterPage()
   {
@@ -17,11 +18,81 @@ export default function Home() {
     
   }
 
+  async function handleGetSchedule() {
+    const uri_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'generate' as string;
+    try {
+      const response = await fetch('api/auth/generate', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          'token': '',
+          'recurrence': '',
+          'startTime': '',
+          'endTime': '',
+          'duration': '',
+          'interval': '',
+          'saturdayOff': '',
+        }),
+      })
+      let schedule = await response.json()
+
+      console.log(schedule)
+      setSchedule(schedule.data);
+    } catch(err) {
+      console.log(err)
+    }
+  }
+
+  async function handleRegister() {
+    try {
+        const response = await fetch('api/auth/register', {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            'name': '',
+            'email': '',
+            'password': ''
+          }),
+        })
+
+        const data = await response.json();
+        console.log(data)
+    } catch(err: any) {
+      console.log(err)
+    }
+  }
+
+  async function handleLogin() {
+    const uri_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'login' as string;
+    try {
+      const response = await fetch('api/auth/login', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            'email': '',
+            'password': ''
+          }),
+        })
+
+        const data = await response.json();
+        console.log(data)
+        // "4|TrfiutRp317m2MPNquZVGMpyycsqIKGAyWfaePesc73a58ab"
+    } catch(err: any) {
+      console.log(err)
+    }
+  }
+
   return (
     <main>
       <div className="w-full flex items-center px-2 py-4 bg-slate-400 h-2 shadow-sm">
         <div className="w-full max-w-7xl mx-auto flex items-center text-white">
           SCHEDULE
+        </div>
+        <div>
+          <button className="text-white" onClick={handleLogin}>LOGIN | </button>
+        </div>
+        <div>
+          <button className="text-white" onClick={handleGetSchedule}>| SCHEDULE</button>
         </div>
       </div>
 
