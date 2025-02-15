@@ -8,7 +8,7 @@ import { Day } from "@/components/day";
 
 const Page = () => {
   const [page, setPage] = useState(1)
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
   const [schedule, setSchedule] = useState<Record<string, { totalTimes: number; times: { time: string; status: number }[] }>>({});
 
   useEffect(() => {
@@ -77,7 +77,8 @@ const Page = () => {
                   <section 
                       key={date}
                       className={`flex-1 bg-sky-200 p-2 flex-col gap-2 shadow-md rounded-md mx-1 
-                          ${isVisible ? "hidden" : "flex"} md:flex`}
+                          ${isVisible ? "flex" : "hidden"}
+                        md:flex`}
                   >
                       <Day
                           date={date}

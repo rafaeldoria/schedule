@@ -9,12 +9,12 @@ interface DateProps {
 export function Day({date, index}: DateProps) {
     const getColorTop = (index: number) => {
         const statusMap: Record<number, string> = {
-            1: "bg-red-500",
-            2: "bg-orange-500",
-            3: "bg-amber-500",
-            4: "bg-yellow-500",
-            5: "bg-red-300",
-            6: "bg-orange-200",
+            0: "bg-red-500",
+            1: "bg-orange-500",
+            2: "bg-amber-500",
+            3: "bg-yellow-500",
+            4: "bg-red-300",
+            5: "bg-orange-200",
         };
     
         return statusMap[index] || ""
