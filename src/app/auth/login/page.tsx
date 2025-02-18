@@ -1,80 +1,110 @@
-import { FaRegUser } from "react-icons/fa";
-import { MdAlternateEmail, MdOutlineEmail } from "react-icons/md";
+"use client"
+
+import ButtonAuth from "@/components/auth/button";
+import FieldAuth from "@/components/auth/field";
+import ImageAuth from "@/components/auth/image";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
+import { useState } from "react";
+import { useForm } from "react-hook-form"
+import { MdAlternateEmail } from "react-icons/md";
 import { TbLockPassword } from "react-icons/tb";
-import authImg from "@/assets/auth/auth.png"
-import Image from "next/image";
+import { z } from "zod"
+
+
+const schema = z.object({
+    username: z.string({
+        required_error: "Username is required"
+    }).min(4, "Must be 5 or more characters long"),
+    password: z.string({
+        required_error: "password is required"
+    }).min(5, "Must be 5 or more characters long")
+})
+
+type FormData = z.infer<typeof schema>
 
 export default function Login() {
+    const [errorApi, setErrorApi] = useState<string>('')
+
+    const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+        resolver: zodResolver(schema)
+    })
+
+    async function handleLogin(formData: FormData) {
+        try {
+            const response = await fetch('/api/generator/login', {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(formData),
+            })
+    
+            const data = await response.json();
+            
+            if (data.status == 'error') {
+                setErrorApi(data.message)
+            }
+
+            setErrorApi('')
+            console.log(data)
+        } catch(err: any) {
+          console.log(err)
+          setErrorApi(err)
+        }
+    }
+
     return (
         <div className="min-w-screen min-h-screen bg-gray-900 flex items-center justify-center px-5 py-5">
             <div className="bg-gray-100 text-gray-500 rounded-3xl shadow-xl w-full overflow-hidden max-w-[1000px]">
                 <div className="md:flex w-full">
 
-                    <div className="hidden md:block w-1/2 bg-indigo-400 py-10 px-10 text-white">
-                    <Image
-                        src={authImg}
-                        alt="Image auth schedule"
-                    />
-                    </div>
+                    <ImageAuth />
 
-                    <div className="w-full md:w-1/2 py-10 px-5 md:px-10">
+                    <form className="w-full md:w-1/2 py-10 px-5 md:px-10" onSubmit={handleSubmit(handleLogin)}>
 
                         <div className="text-center mb-10">
                             <h1 className="font-bold text-3xl text-gray-900">LOGIN</h1>
                             <p>Welcome Back</p>
+
                         </div>
+
+                        {errorApi != '' && <p className="text-xs text-red-500 mb-1">{errorApi}</p>}
 
                         <div>
-                            <div className="flex -mx-3">
-                                <div className="w-full px-3 mb-5">
-                                    <label htmlFor="" className="text-xs font-semibold px-1">
-                                        Username or Email
-                                    </label>
-                                    <div className="flex">
-                                        <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center">
-                                            <MdAlternateEmail size={20} color="#E5E7EB"/>
-                                        </div>
-                                        <input
-                                            type="text"
-                                            className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500 duration-300"
-                                            placeholder="ethansmith"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
+                            <FieldAuth
+                                label="Username"
+                                mb="mb-5"
+                                icon={<MdAlternateEmail size={20} color="#E5E7EB"/>}
+                                type="text"
+                                name="username"
+                                placeholder="ethansmith"
+                                error={errors.username?.message}
+                                register={register}
+                            />
 
-                            <div className="flex -mx-3">
-                                <div className="w-full px-3 mb-12">
-                                    <label htmlFor="" className="text-xs font-semibold px-1">
-                                        Password
-                                    </label>
-                                    <div className="flex">
-                                        <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center">
-                                            <TbLockPassword size={20} color="#E5E7EB"/>
-                                        </div>
-                                        <input
-                                            type="password"
-                                            className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500 duration-300"
-                                            placeholder="************"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
+                            <FieldAuth
+                                label="Password"
+                                mb="mb-12"
+                                icon={<TbLockPassword size={20} color="#E5E7EB"/>}
+                                type="password"
+                                name="password"
+                                placeholder="************"
+                                error={errors.password?.message}
+                                register={register}
+                            />
 
-                            <div className="flex -mx-3">
-                                <div className="w-full px-3 mb-5">
-                                    <button className="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 duration-300 text-white rounded-lg px-3 py-3 font-semibold">
-                                        SIGN IN
-                                    </button>
-                                </div>
-                            </div>
+                            <ButtonAuth
+                                text="SIGN IN"
+                            />
 
                             <div className="mt-4 text-sm font-display font-semibold text-center">
-                                Don't have an account? <a className="cursor-pointer text-indigo-500 hover:text-indigo-700 duration-300">Sign up</a>
+                                Don't have an account? 
+                                <Link href="/auth/register" className="cursor-pointer text-indigo-500 hover:text-indigo-700 duration-300 ml-1">
+                                    Sign up
+                                </Link>
                             </div>
 
                         </div>
-                    </div>
+                    </form>
 
                 </div>
             </div>

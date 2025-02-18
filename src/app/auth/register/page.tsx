@@ -1,98 +1,118 @@
+"use client"
+
 import { FaRegUser } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
 import { TbLockPassword } from "react-icons/tb";
-import authImg from "@/assets/auth/auth.png"
-import Image from "next/image";
+import ImageAuth from "@/components/auth/image";
+import FieldAuth from "@/components/auth/field";
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import ButtonAuth from "@/components/auth/button";
+import Link from "next/link";
+import { useState } from "react";
+
+
+const schema = z.object({
+    username: z.string({
+        required_error: "Username is required"
+    }).min(5, "Must be 5 or more characters long"),
+    email: z.string().email({
+        message: "Invalid email address"
+    }),
+    password: z.string({
+        required_error: "password is required"
+    }).min(5, "Must be 5 or more characters long")
+})
+
+type FormData = z.infer<typeof schema>
 
 export default function Register() {
+    const [errorApi, setErrorApi] = useState<string>('')
+
+    const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+        resolver: zodResolver(schema)
+    })
+
+    async function handleRegister(formData: FormData) {
+        try {
+            const response = await fetch('/api/generator/register', {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(formData),
+            })
+    
+            const data = await response.json();
+            console.log(data)
+        } catch(err: any) {
+          console.log(err)
+          setErrorApi(err)
+        }
+    }
+
     return (
         <div className="min-w-screen min-h-screen bg-gray-900 flex items-center justify-center px-5 py-5">
             <div className="bg-gray-100 text-gray-500 rounded-3xl shadow-xl w-full overflow-hidden max-w-[1000px]">
                 <div className="md:flex w-full">
 
-                    <div className="hidden md:block w-1/2 bg-indigo-400 py-10 px-10 text-white">
-                    <Image
-                        src={authImg}
-                        alt="Image auth schedule"
-                    />
-                    </div>
+                    <ImageAuth />
 
-                    <div className="w-full md:w-1/2 py-10 px-5 md:px-10">
+                    <form className="w-full md:w-1/2 py-10 px-5 md:px-10" onSubmit={handleSubmit(handleRegister)}>
 
                         <div className="text-center mb-10">
                             <h1 className="font-bold text-3xl text-gray-900">REGISTER</h1>
                             <p>Enter your information to register</p>
                         </div>
 
+                        {errorApi != '' && <p className="text-xs text-red-500 mb-1">{errorApi}</p>}
+
                         <div>
-                            <div className="flex -mx-3">
-                                <div className="w-full px-3 mb-5">
-                                    <label htmlFor="" className="text-xs font-semibold px-1">
-                                        Username
-                                    </label>
-                                    <div className="flex">
-                                        <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center">
-                                            <MdOutlineEmail size={20} color="#E5E7EB"/>
-                                        </div>
-                                        <input
-                                            type="text"
-                                            className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500 duration-300"
-                                            placeholder="ethansmith"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
+                            <FieldAuth
+                                label="username"
+                                mb="mb-5"
+                                icon={<MdOutlineEmail size={20} color="#E5E7EB"/>}
+                                name="username"
+                                type="text"
+                                placeholder="your username"
+                                error={errors.username?.message}
+                                register={register}
+                            />
 
-                            <div className="flex -mx-3">
-                                <div className="w-full px-3 mb-5">
-                                    <label htmlFor="" className="text-xs font-semibold px-1">
-                                        Email
-                                    </label>
-                                    <div className="flex">
-                                        <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center">
-                                            <FaRegUser size={20} color="#E5E7EB"/>
-                                        </div>
-                                        <input
-                                            type="email"
-                                            className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500 duration-300"
-                                            placeholder="ethan@email.com"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
+                            <FieldAuth
+                                label="Email"
+                                mb="mb-5"
+                                icon={<FaRegUser size={20} color="#E5E7EB"/>}
+                                type="email"
+                                name="email"
+                                placeholder="ethan@email.com"
+                                error={errors.email?.message}
+                                register={register}
+                            />
 
-                            <div className="flex -mx-3">
-                                <div className="w-full px-3 mb-12">
-                                    <label htmlFor="" className="text-xs font-semibold px-1">
-                                        Password
-                                    </label>
-                                    <div className="flex">
-                                        <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center">
-                                            <TbLockPassword size={20} color="#E5E7EB"/>
-                                        </div>
-                                        <input
-                                            type="password"
-                                            className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500 duration-300"
-                                            placeholder="************"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
+                            <FieldAuth
+                                label="Password"
+                                mb="mb-12"
+                                icon={<TbLockPassword size={20} color="#E5E7EB"/>}
+                                type="password"
+                                name="password"
+                                placeholder="************"
+                                error={errors.password?.message}
+                                register={register}
+                            />
 
-                            <div className="flex -mx-3">
-                                <div className="w-full px-3 mb-5">
-                                    <button className="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 duration-300 text-white rounded-lg px-3 py-3 font-semibold">
-                                        CREATE ACCOUNT
-                                    </button>
-                                </div>
-                            </div>
+                            <ButtonAuth
+                                text="CREATE ACCOUNT"
+                            />
 
                             <div className="mt-4 text-sm font-display font-semibold text-center">
-                                Have an account yet? <a className="cursor-pointer text-indigo-500 hover:text-indigo-700 duration-300">Sign in</a>
+                                Have an account yet? 
+                                <Link href="/auth/login" className="cursor-pointer text-indigo-500 hover:text-indigo-700 duration-300 ml-1">
+                                    Sign in
+                                </Link>
                             </div>
 
                         </div>
-                    </div>
+                    </form>
 
                 </div>
             </div>

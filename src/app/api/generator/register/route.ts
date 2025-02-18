@@ -6,20 +6,23 @@ const uri_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'register' as string
 export async function POST(req: Request) {
     try {
         const {
-            name,
+            username,
             email,
             password
         } = await req.json();
 
-        if (!name || !name || !email || !password) {
+        if (!username || !email || !password) {
             return NextResponse.json({ error: "Failed to register new user." }, { status: 401 })
         }
 
         const response = await fetch(uri_schedule, {
             method: 'POST',
-            headers: {'Content-type': 'application/json'},
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({
-              "name": name,
+              "name": username,
               "email": email,
               "password": password
             }),
@@ -29,7 +32,7 @@ export async function POST(req: Request) {
 
         if (!response.ok) {
             return NextResponse.json({ error: data.message }, { status: response.status });
-          }
+        }
       
         return NextResponse.json(data);
     } catch (error) {
