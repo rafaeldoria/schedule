@@ -1,11 +1,12 @@
 "use client"
 
+import { useAuth } from "@/app/context/AuthContext";
 import ButtonAuth from "@/components/auth/button";
 import FieldAuth from "@/components/auth/field";
 import ImageAuth from "@/components/auth/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form"
 import { MdAlternateEmail } from "react-icons/md";
 import { TbLockPassword } from "react-icons/tb";
@@ -13,42 +14,40 @@ import { z } from "zod"
 
 
 const schema = z.object({
-    username: z.string({
-        required_error: "Username is required"
-    }).min(4, "Must be 5 or more characters long"),
+    email: z.string({required_error: "email is required"}).email({
+        message: "invalid email address"
+    }),
     password: z.string({
         required_error: "password is required"
-    }).min(5, "Must be 5 or more characters long")
+    }).min(5, "must be 5 or more characters long")
 })
 
 type FormData = z.infer<typeof schema>
 
 export default function Login() {
     const [errorApi, setErrorApi] = useState<string>('')
+    const { login } = useAuth()
 
-    const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+    const { register, handleSubmit, formState: { errors }, watch } = useForm<FormData>({
         resolver: zodResolver(schema)
     })
 
+    const email = watch("email");
+    const password = watch("password");
+
+    useEffect(() => {
+        setErrorApi('')
+    }, [email, password]);
+
     async function handleLogin(formData: FormData) {
         try {
-            const response = await fetch('/api/generator/login', {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(formData),
-            })
-    
-            const data = await response.json();
-            
-            if (data.status == 'error') {
-                setErrorApi(data.message)
-            }
+            const response = await login(formData.email, formData.password)
 
-            setErrorApi('')
-            console.log(data)
-        } catch(err: any) {
-          console.log(err)
-          setErrorApi(err)
+            if (!response.success) {
+                setErrorApi(response.message)
+            }
+        } catch (err: any) {
+            setErrorApi(err.message)
         }
     }
 
@@ -71,13 +70,13 @@ export default function Login() {
 
                         <div>
                             <FieldAuth
-                                label="Username"
+                                label="Email"
                                 mb="mb-5"
                                 icon={<MdAlternateEmail size={20} color="#E5E7EB"/>}
                                 type="text"
-                                name="username"
+                                name="email"
                                 placeholder="ethansmith"
-                                error={errors.username?.message}
+                                error={errors.email?.message}
                                 register={register}
                             />
 

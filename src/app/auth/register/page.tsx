@@ -11,23 +11,25 @@ import { useForm } from "react-hook-form"
 import ButtonAuth from "@/components/auth/button";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 
 const schema = z.object({
     username: z.string({
-        required_error: "Username is required"
-    }).min(5, "Must be 5 or more characters long"),
+        required_error: "username is required"
+    }).min(5, "must be 5 or more characters long"),
     email: z.string().email({
-        message: "Invalid email address"
+        message: "invalid email address"
     }),
     password: z.string({
         required_error: "password is required"
-    }).min(5, "Must be 5 or more characters long")
+    }).min(5, "must be 5 or more characters long")
 })
 
 type FormData = z.infer<typeof schema>
 
 export default function Register() {
+    const router = useRouter()
     const [errorApi, setErrorApi] = useState<string>('')
 
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
@@ -43,9 +45,14 @@ export default function Register() {
             })
     
             const data = await response.json();
-            console.log(data)
+
+            if (data.success && data.message === 'User Created.') {
+                router.push('/auth/login')
+                return
+            }
+
+            setErrorApi(data.message)
         } catch(err: any) {
-          console.log(err)
           setErrorApi(err)
         }
     }

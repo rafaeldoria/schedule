@@ -6,11 +6,11 @@ const uri_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'login' as string;
 export async function POST(req: Request) {
     try {
         const {
-            username,
+            email,
             password
         } = await req.json();
 
-        if (!username || !password) {
+        if (!email || !password) {
             return NextResponse.json({ error: "Failed to signin." }, { status: 401 })
         }
 
@@ -21,7 +21,7 @@ export async function POST(req: Request) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              "username": username,
+              "email": email,
               "password": password
             }),
         })
