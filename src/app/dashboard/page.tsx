@@ -5,11 +5,14 @@ import dayjs from "dayjs";
 import { Header } from "@/components/header";
 import { Time } from "@/components/time";
 import { Day } from "@/components/day";
+import { useAuth } from "../context/AuthContext";
 
 const Page = () => {
   const [page, setPage] = useState(1)
   const [isVisible, setIsVisible] = useState(true)
+  const [errorApi, setErrorApi] = useState<string>('')
   const [schedule, setSchedule] = useState<Record<string, { totalTimes: number; times: { time: string; status: number }[] }>>({});
+  const { token } = useAuth()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,9 +49,13 @@ const Page = () => {
         })
         let schedule = await response.json()
 
+        if (schedule.error) {
+          setErrorApi(schedule.message)
+        }
+
         setSchedule(schedule.data);
-      } catch(err) {
-        console.log(err)
+      } catch(err: any) {
+        setErrorApi(err.message)
       }
     };
 
@@ -70,9 +77,12 @@ const Page = () => {
         <Header />
 
         <div className="w-full max-w-7xl mx-auto px-2 py-4 mt-6 bg-slate-300 border-none rounded-md">
+
+          {errorApi != '' && <p className="text-xs text-red-500 mb-1">{errorApi}</p>}
           
           <div className="flex items-center justify-center">
-          {Object.entries(schedule).map(([date, details], index) => 
+          {Object.keys(schedule).length > 0 && 
+            Object.entries(schedule).map(([date, details], index) => 
               details.totalTimes > 0 && (
                   <section 
                       key={date}
