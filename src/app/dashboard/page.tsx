@@ -11,7 +11,7 @@ const Page = () => {
   const [page, setPage] = useState(1)
   const [isVisible, setIsVisible] = useState(true)
   const [errorApi, setErrorApi] = useState<string>('')
-  const [schedule, setSchedule] = useState<Record<string, { totalTimes: number; times: { time: string; status: number }[] }>>({});
+  const [schedule, setSchedule] = useState<{ [date: string]: ScheduleDay}>({});
   const { token } = useAuth()
 
   useEffect(() => {
@@ -51,6 +51,8 @@ const Page = () => {
 
         if (schedule.error) {
           setErrorApi(schedule.message)
+
+          return
         }
 
         setSchedule(schedule.data);
@@ -81,30 +83,34 @@ const Page = () => {
           {errorApi != '' && <p className="text-xs text-red-500 mb-1">{errorApi}</p>}
           
           <div className="flex items-center justify-center">
-          {Object.keys(schedule).length > 0 && 
-            Object.entries(schedule).map(([date, details], index) => 
-              details.totalTimes > 0 && (
-                  <section 
-                      key={date}
-                      className={`flex-1 bg-sky-200 p-2 flex-col gap-2 shadow-md rounded-md mx-1 
-                          ${isVisible ? "flex" : "hidden"}
-                        md:flex`}
-                  >
-                      <Day
-                          date={date}
-                          index={index}
-                      />
 
-                      {details.times.map((item, index) => (
-                          <Time
-                            key={`${date}-${index}`}
-                            time={item.time}
-                            status={item.status}
-                          />
-                      ))}
-                  </section>
+            {Object.keys(schedule).length > 0 ? (
+
+              Object.entries(schedule).map(([date, details], index) => 
+                details.totalTimes > 0 && (
+                    <section 
+                        key={date}
+                        className={`flex-1 bg-sky-200 p-2 flex-col gap-2 shadow-md rounded-md mx-1 
+                            ${isVisible ? "flex" : "hidden"}
+                          md:flex`}
+                    >
+                        <Day
+                            date={date}
+                            index={index}
+                        />
+
+                        {details.times.map((item, index) => (
+                            <Time
+                              key={`${date}-${index}`}
+                              time={item.time}
+                              status={item.status}
+                            />
+                        ))}
+                    </section>
+                )
+
               )
-          )}
+            ): (<p>Nenhum</p>)}
 
           </div>
 
