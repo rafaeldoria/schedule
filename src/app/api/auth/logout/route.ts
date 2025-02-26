@@ -1,31 +1,21 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { NextResponse } from 'next/server';
 
-const uri_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'register' as string;
+const uri_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'logout' as string;
 
-export async function POST(req: Request) {
+export async function POST(request: Request) {
     try {
         const {
-            username,
-            email,
-            password
-        } = await req.json();
-
-        if (!username || !email || !password) {
-            return NextResponse.json({ error: "Failed to register new user." }, { status: 401 })
-        }
+            token,
+        } = await request.json();
 
         const response = await fetch(uri_schedule, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
             },
-            body: JSON.stringify({
-              "name": username,
-              "email": email,
-              "password": password
-            }),
         })
         
         const data = await response.json()

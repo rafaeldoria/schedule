@@ -1,17 +1,20 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
-const uri_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'login' as string;
+const uri_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'employee' as string;
 
-export async function POST(req: Request) {
+export async function GET(request: Request) {
+}
+
+export async function POST(request: Request) {
     try {
         const {
+            fullName,
             email,
-            password
-        } = await req.json();
+            _function,
+        } = await request.json();
 
-        if (!email || !password) {
-            return NextResponse.json({ error: "Failed to signin." }, { status: 401 })
+        if (!fullName || !_function) {
+            return NextResponse.json({ error: "Failed to create employee." }, { status: 401 })
         }
 
         const response = await fetch(uri_schedule, {
@@ -21,11 +24,12 @@ export async function POST(req: Request) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+              "full_name": fullName,
               "email": email,
-              "password": password
+              "functon": _function
             }),
         })
-        
+
         const data = await response.json()
 
         if (!response.ok) {
@@ -34,6 +38,9 @@ export async function POST(req: Request) {
       
         return NextResponse.json(data);
     } catch (error) {
-        return NextResponse.json({ error: "Internal error." }, { status: 500 });
+        console.log(error)
     }
+}
+
+export async function PUT(request: Request) {
 }

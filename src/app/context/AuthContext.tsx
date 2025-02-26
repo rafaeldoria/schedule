@@ -27,7 +27,7 @@ export function AuthProvider({ children }: { children: React.ReactNode}) {
 
     const login = async (email: string, password: string) => {
         try {
-            const response = await fetch('/api/generator/login', {
+            const response = await fetch('/api/auth/login', {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ email, password }),
@@ -61,7 +61,13 @@ export function AuthProvider({ children }: { children: React.ReactNode}) {
         }
     }
 
-    const logout = () => {
+    const logout = async () => {
+        const response = await fetch('/api/auth/logout', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(token),
+        })
+
         localStorage.removeItem(TOKEN_KEY)
         setToken(null)
         router.push('/auth/login')

@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
 import { useEffect } from "react";
+import { DashboardHeader } from "./components/header";
+import { Header } from "@/components/header";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode}) {
     const { token } = useAuth()
@@ -16,5 +18,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
     if (!token) return null;
 
-    return <>{children}</>
+    return (
+        <>
+            <Header />
+            <DashboardHeader />
+            {children}
+        </>
+    )
 };
