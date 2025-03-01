@@ -7,16 +7,18 @@ import { DashboardHeader } from "./components/header";
 import { Header } from "@/components/header";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode}) {
-    const { token } = useAuth()
+    const { authenticated, loading } = useAuth()
     const router = useRouter()
 
     useEffect( () => {
-        if (!token) {
+        if (!loading && !authenticated) {
             router.push('auth/login')
         }
-    }, [ token, router])
+    }, [ authenticated, loading, router])
 
-    if (!token) return null;
+    if (loading) return <p>Carregando...</p>;
+
+    if (!authenticated) return null;
 
     return (
         <>

@@ -1,9 +1,9 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
 import { NextResponse } from 'next/server';
-
-const uri_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'logout' as string;
+import { cookies } from 'next/headers';
 
 export async function POST(request: Request) {
+    const uri_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'logout' as string;
+    const TOKEN_KEY = process.env.NEXT_PUBLIC_TOKEN_KEY as string
     try {
         const {
             token,
@@ -24,6 +24,8 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: data.message }, { status: response.status });
         }
       
+        (cookies()).delete(TOKEN_KEY)
+
         return NextResponse.json(data);
     } catch (error) {
         return NextResponse.json({ error: "Internal error." }, { status: 500 });

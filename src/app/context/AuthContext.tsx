@@ -3,10 +3,9 @@
 import { useRouter } from "next/navigation";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-const TOKEN_KEY = 'auth_token'
-
 interface AuthContextType {
-    token: string | null;
+    authenticated: boolean;
+    loading: boolean;
     login: (email: string, password: string) => Promise<{success: boolean, message: string}>;
     logout: () => void;
 }
@@ -14,15 +13,29 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: React.ReactNode}) {
-    const [token, setToken] = useState<string | null>(null)
+    const [authenticated, setAuthenticated] = useState(false)
+    const [loading, setLoading] = useState(true)
     const router = useRouter()
 
     useEffect(() => {
-        const storedToken = localStorage.getItem(TOKEN_KEY)
-
-        if (storedToken) {
-            setToken(storedToken)
+        async function checkAuth() {
+            try {
+                const response = await fetch('/api/auth/check', {
+                    method: 'GET',
+                    credentials: 'include',
+                })
+                const data = await response.json()
+    
+                console.log(data.authenticated)
+                setAuthenticated(data.authenticated)
+            } catch (error) {
+                console.log(error)
+            } finally {
+                setLoading(false)
+            }
         }
+
+        checkAuth();
     }, []);
 
     const login = async (email: string, password: string) => {
@@ -39,9 +52,8 @@ export function AuthProvider({ children }: { children: React.ReactNode}) {
                 throw new Error(data.message)
             }
 
-            if (response.ok && data.token) {
-                localStorage.setItem(TOKEN_KEY, data.token)
-                setToken(data.token)
+            if (response.ok) {
+                setAuthenticated(true)
                 router.push('/')
 
                 return {
@@ -61,20 +73,18 @@ export function AuthProvider({ children }: { children: React.ReactNode}) {
         }
     }
 
-    const logout = async () => {
-        const response = await fetch('/api/auth/logout', {
+    const logout = () => {
+        fetch('/api/auth/logout', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(token),
         })
 
-        localStorage.removeItem(TOKEN_KEY)
-        setToken(null)
+        setAuthenticated(false)
         router.push('/auth/login')
     }
 
     return (
-        <AuthContext.Provider value={{ token, login, logout }}>
+        <AuthContext.Provider value={{ authenticated, loading, login, logout }}>
             {children}
         </AuthContext.Provider>
     )

@@ -12,7 +12,6 @@ const Schedule = () => {
   const [isVisible, setIsVisible] = useState(true)
   const [errorApi, setErrorApi] = useState<string>('')
   const [schedule, setSchedule] = useState<{ [date: string]: ScheduleDay}>({});
-  const { token } = useAuth()
 
   useEffect(() => {
     const fetchData = async () => {

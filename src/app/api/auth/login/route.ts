@@ -1,9 +1,10 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
+import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
-const uri_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'login' as string;
-
 export async function POST(request: Request) {
+    const uri_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'login' as string;
+    const TOKEN_KEY = process.env.NEXT_PUBLIC_TOKEN_KEY as string
+
     try {
         const {
             email,
@@ -31,6 +32,13 @@ export async function POST(request: Request) {
         if (!response.ok) {
             return NextResponse.json({ error: data.message }, { status: response.status });
         }
+
+        const cookieStore = await cookies()
+        cookieStore.set({
+            name: TOKEN_KEY,
+            value: data.token,
+            maxAge: 60 * 60 * 24,
+        })
       
         return NextResponse.json(data);
     } catch (error) {
