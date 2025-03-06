@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface AuthContextType {
-    authenticated: boolean;
+    authenticated: string|null;
     loading: boolean;
     login: (email: string, password: string) => Promise<{success: boolean, message: string}>;
     logout: () => void;
@@ -13,7 +13,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: React.ReactNode}) {
-    const [authenticated, setAuthenticated] = useState(false)
+    const [authenticated, setAuthenticated] = useState(null)
     const [loading, setLoading] = useState(true)
     const router = useRouter()
 
@@ -26,7 +26,6 @@ export function AuthProvider({ children }: { children: React.ReactNode}) {
                 })
                 const data = await response.json()
     
-                console.log(data.authenticated)
                 setAuthenticated(data.authenticated)
             } catch (error) {
                 console.log(error)
@@ -53,7 +52,7 @@ export function AuthProvider({ children }: { children: React.ReactNode}) {
             }
 
             if (response.ok) {
-                setAuthenticated(true)
+                setAuthenticated(data.token)
                 router.push('/')
 
                 return {
@@ -79,7 +78,7 @@ export function AuthProvider({ children }: { children: React.ReactNode}) {
             headers: { "Content-Type": "application/json" },
         })
 
-        setAuthenticated(false)
+        setAuthenticated(null)
         router.push('/auth/login')
     }
 

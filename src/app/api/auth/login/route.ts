@@ -12,7 +12,7 @@ export async function POST(request: Request) {
         } = await request.json();
 
         if (!email || !password) {
-            return NextResponse.json({ error: "Failed to signin." }, { status: 401 })
+            return NextResponse.json({ error: "Failed to signin.", status: 401 })
         }
 
         const response = await fetch(uri_schedule, {
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
         const data = await response.json()
 
         if (!response.ok) {
-            return NextResponse.json({ error: data.message }, { status: response.status });
+            return NextResponse.json({ error: data.message, status: response.status });
         }
 
         const cookieStore = await cookies()
@@ -42,6 +42,6 @@ export async function POST(request: Request) {
       
         return NextResponse.json(data);
     } catch (error) {
-        return NextResponse.json({ error: "Internal error." }, { status: 500 });
+        return NextResponse.json({ error: "Internal error.", status: 500 });
     }
 }

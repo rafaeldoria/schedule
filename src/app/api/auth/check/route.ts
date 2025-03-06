@@ -5,5 +5,5 @@ export async function GET(request: Request) {
     const TOKEN_KEY = process.env.NEXT_PUBLIC_TOKEN_KEY as string
     const cookieStore = await cookies()
 
-    return NextResponse.json({ authenticated: cookieStore.has(TOKEN_KEY) })
+    return NextResponse.json({ authenticated: cookieStore.get(TOKEN_KEY)?.value, status: 200 })
 }

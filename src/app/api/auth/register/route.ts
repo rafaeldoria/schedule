@@ -12,7 +12,7 @@ export async function POST(request: Request) {
         } = await request.json();
 
         if (!username || !email || !password) {
-            return NextResponse.json({ error: "Failed to register new user." }, { status: 401 })
+            return NextResponse.json({ error: "Failed to register new user.", status: 401 })
         }
 
         const response = await fetch(uri_schedule, {
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
         const data = await response.json()
 
         if (!response.ok) {
-            return NextResponse.json({ error: data.message }, { status: response.status });
+            return NextResponse.json({ error: data.message, status: response.status });
         }
       
         return NextResponse.json(data);

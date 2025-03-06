@@ -21,13 +21,13 @@ export async function POST(request: Request) {
         const data = await response.json()
 
         if (!response.ok) {
-            return NextResponse.json({ error: data.message }, { status: response.status });
+            return NextResponse.json({ error: data.message, status: response.status });
         }
       
         (cookies()).delete(TOKEN_KEY)
 
         return NextResponse.json(data);
     } catch (error) {
-        return NextResponse.json({ error: "Internal error." }, { status: 500 });
+        return NextResponse.json({ error: "Internal error.", status: 500 });
     }
 }

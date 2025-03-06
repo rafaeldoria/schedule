@@ -7,7 +7,7 @@ export async function GET(request: Request) {
         const token = request.headers.get("Authorization")?.replace("Bearer ", "");
 
         if (!token) {
-            return NextResponse.json({ error: "Invalid request." }, { status: 401 });
+            return NextResponse.json({ error: "Invalid request.", status: 404 });
         }
 
         const response = await fetch(uri_schedule, {
@@ -22,12 +22,12 @@ export async function GET(request: Request) {
         const data = await response.json()
 
         if (!response.ok) {
-            return NextResponse.json({ error: data.message }, { status: response.status });
+            return NextResponse.json({ error: data.message, status: response.status });
         }
       
         return NextResponse.json(data);
     } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 404 });
+        return NextResponse.json({ error: error.message, status: 404 });
     }
 }
 
@@ -53,12 +53,13 @@ export async function POST(request: Request) {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
             },
             body: JSON.stringify({
               "full_name": fullName,
               "email": email,
-              "functon": _function
+              "function": _function
             }),
         })
 
@@ -68,7 +69,7 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: data.message }, { status: response.status });
         }
       
-        return NextResponse.json(data);
+        return NextResponse.json({ error: '', status: response.status });
     } catch (error) {
         console.log(error)
     }

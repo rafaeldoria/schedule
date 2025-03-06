@@ -30,7 +30,7 @@ export default async function Dashboard() {
                 <div className="flex items-center justify-between mb-2">
                     <h1 className="text-3xl font-bold">Employees</h1>
                     <div className="flex items-center gap-3">
-                        <Link href='/dashboard/employe/new' className="flex bg-blue-500 px-4 py-1 rounded text-white gap-2">
+                        <Link href='/dashboard/employee/new' className="flex bg-blue-500 px-4 py-1 rounded text-white gap-2">
                             <IoIosAddCircle size={20} color="#E5E7EB"/>
                             New employee
                         </Link>
