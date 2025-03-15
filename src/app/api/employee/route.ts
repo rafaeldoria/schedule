@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { cookies } from 'next/headers'
 
 const uri_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'employee' as string;
 
@@ -19,13 +20,13 @@ export async function GET(request: Request) {
             }
         })
 
-        const data = await response.json()
+        const ret = await response.json()
 
         if (!response.ok) {
-            return NextResponse.json({ error: data.message, status: response.status });
+            return NextResponse.json({ error: ret.message, status: response.status });
         }
-      
-        return NextResponse.json(data);
+
+        return NextResponse.json({ employees: ret.data, status: 200 });
     } catch (error: any) {
         return NextResponse.json({ error: error.message, status: 404 });
     }

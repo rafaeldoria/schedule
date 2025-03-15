@@ -1,6 +1,6 @@
 import { Container } from "@/components/container";
 import Link from "next/link";
-import { NewEmployeeForm } from "../components/form";
+import { NewEmployeeForm } from "../components/employeeForm";
 
 export default function NewEmployee() {
     return (

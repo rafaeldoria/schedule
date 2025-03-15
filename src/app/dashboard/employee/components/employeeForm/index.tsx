@@ -52,9 +52,8 @@ export function NewEmployeeForm() {
             }
 
         } catch(err: any) {
+            console.log(err)
         }
-
-        
     }
 
     return (

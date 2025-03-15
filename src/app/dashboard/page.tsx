@@ -4,6 +4,7 @@ import { IoIosAddCircle } from "react-icons/io";
 import { EmployeeProps } from "@/utils/employee.type";
 import { cookies } from 'next/headers'
 import { ListEmployee } from "./employee/components/list";
+import { AuthLogout } from "../auth/components/logout";
 
 export default async function Dashboard() {
     const TOKEN_KEY = process.env.NEXT_PUBLIC_TOKEN_KEY as string
@@ -19,10 +20,15 @@ export default async function Dashboard() {
             "Accept": "application/json",
         }
     })
-    const employees = await response.json()
+    const data = await response.json()
+
+    const employees = data.employees ?? []
 
     return (
         <Container>
+            {data.status === 401 && (
+                <AuthLogout />
+            )}
             <main className="text-slate-200">
 
                 <div className="flex items-center justify-between mb-2">
@@ -36,27 +42,35 @@ export default async function Dashboard() {
                     </div>
                 </div>
 
-                <table className="min-w-full my-2 table-fixed">
-                    <thead>
-                        <tr>
-                            <th className="font-medium text-left pl-1 w-1/4">EMPLOYEE</th>
-                            <th className="font-medium text-left hidden sm:table-cell w-1/4">FUNCTION</th>
-                            <th className="font-medium text-left hidden sm:table-cell w-1/4">EMAIL</th>
-                            <th className="font-medium text-left hidden sm:table-cell w-1/6">STATUS</th>
-                            <th className="font-medium text-left w-1/6">#</th>
-                        </tr>
-                    </thead>
+                {Array.isArray(employees) && employees.length > 0 ? (
+                    <table className="min-w-full my-2 table-fixed">
+                        <thead>
+                            <tr>
+                                <th className="font-medium text-left pl-1 w-1/4">EMPLOYEE</th>
+                                <th className="font-medium text-left hidden sm:table-cell w-1/4">FUNCTION</th>
+                                <th className="font-medium text-left hidden sm:table-cell w-1/4">EMAIL</th>
+                                <th className="font-medium text-left hidden sm:table-cell w-1/6">STATUS</th>
+                                <th className="font-medium text-left w-1/6">#</th>
+                            </tr>
+                        </thead>
 
-                    <tbody>
-                        {employees.data.map((employee: EmployeeProps ) => (
-                            <ListEmployee
-                                key={employee.id}
-                                employee={employee}
-                                token={storedToken}
-                            />
-                        ))}
-                    </tbody>
-                </table>
+                        <tr className="h-2"></tr>
+
+                        <tbody>
+                            {employees.map((employee: EmployeeProps ) => (
+                                <ListEmployee
+                                    key={employee.id}
+                                    employee={employee}
+                                    token={storedToken}
+                                />
+                            ))}
+                        </tbody>
+                    </table>
+                ) : (
+                    <div>
+                        Not founded employees
+                    </div>
+                )}
             </main>
         </Container>
     );

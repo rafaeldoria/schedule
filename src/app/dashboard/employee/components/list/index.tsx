@@ -1,6 +1,7 @@
 "use client"
 
 import { EmployeeProps } from "@/utils/employee.type";
+import Link from "next/link";
 import { useState } from "react";
 import { FaEdit, FaSave } from "react-icons/fa";
 import { IoSettingsSharp } from "react-icons/io5";
@@ -19,8 +20,7 @@ export function ListEmployee({ employee, token }: { employee: EmployeeProps; tok
     };
 
     const handleSave = async () => {
-        console.log("Salvando:", editedEmployee);
-        const response = await fetch('/api/employee', {
+        await fetch('/api/employee', {
             method: "PUT",
             headers: { 
                 "Content-Type": "application/json",
@@ -29,8 +29,6 @@ export function ListEmployee({ employee, token }: { employee: EmployeeProps; tok
             body: JSON.stringify(editedEmployee),
         })
 
-        const data = await response.json();
-        console.log(data)
         setIsEditing(false);
     };
 
@@ -107,17 +105,17 @@ export function ListEmployee({ employee, token }: { employee: EmployeeProps; tok
                         </button>
                     </>
                 ) : (
-                    <>
+                    <div className="flex">
                         <button onClick={() => handleEditing()} className="mr-2" title="edit">
                             <FaEdit size={20} color="#007e1f" />
                         </button>
-                        <button className="mr-2" title="settings">
+                        <Link href={`/dashboard/employee/settings/${employee.id}`} className="mr-2" title="settings">
                             <IoSettingsSharp size={20} color="#5e5d5d" />
-                        </button>
+                        </Link>
                         <button title="schedule">
                             <RiCalendarScheduleLine size={20} color="#742100" />
                         </button>
-                    </>
+                    </div>
                 )}
             </td>
         </tr>
