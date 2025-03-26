@@ -1,11 +1,11 @@
 export interface EmployeeSettingProps {
     id: string;
-    duration: string;
+    duration: number;
     start_time: string;
     end_time: string;
     intervals: Array<SettingsInterval>;
     saturday_off: boolean;
-    close_days: string;
+    close_days: number;
     employee_id: string;
 }
 

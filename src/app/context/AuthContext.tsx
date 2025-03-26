@@ -47,13 +47,15 @@ export function AuthProvider({ children }: { children: React.ReactNode}) {
     
             const data = await response.json();
             
+            console.log(data) //testar login direcionamento
             if (data.status == 'error') {
                 throw new Error(data.message)
             }
 
             if (response.ok) {
+                console.log('entrou no response ok')
                 setAuthenticated(data.token)
-                router.push('/')
+                router.push('/dashboard')
 
                 return {
                     'success': true,

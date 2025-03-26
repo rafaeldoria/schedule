@@ -9,9 +9,10 @@ interface InputProps {
     register: UseFormRegister<any>;
     error?: string;
     rules?: RegisterOptions;
+    formatValue?: (value: string) => string;
 }
 
-export function Input({ name, placeholder, type, register, rules, error }: InputProps) {
+export function Input({ name, placeholder, type, register, rules, error, formatValue }: InputProps) {
     return (
         <>
             <input
@@ -19,8 +20,15 @@ export function Input({ name, placeholder, type, register, rules, error }: Input
                 border-gray-200 outline-none focus:border-indigo-500 focus:border-2 duration-200"
                 type={type} 
                 placeholder={placeholder}
-                {...register(name, rules)}
                 id={name}
+                {...register(name, {
+                    ...rules,
+                    onChange: (e) => {
+                        if (formatValue) {
+                            e.target.value = formatValue(e.target.value);
+                        }
+                    }
+                })}
             />
             {error && <p className="text-red-500 my-1">{error}</p>}
         </>

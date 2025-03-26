@@ -5,16 +5,16 @@ import { useAuth } from "../context/AuthContext";
 import { useEffect } from "react";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode}) {
-    const { token } = useAuth()
+    const { authenticated } = useAuth()
     const router = useRouter()
 
     useEffect( () => {
-        if (!token) {
+        if (!authenticated) {
             router.push('auth/login')
         }
-    }, [ token, router])
+    }, [ authenticated, router])
 
-    if (!token) return null;
+    if (!authenticated) return null;
 
     return <>{children}</>
 };

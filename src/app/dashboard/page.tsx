@@ -43,7 +43,7 @@ export default async function Dashboard() {
                 </div>
 
                 {Array.isArray(employees) && employees.length > 0 ? (
-                    <table className="min-w-full my-2 table-fixed">
+                    <table className="min-w-full my-2 table-fixed border-separate border-spacing-y-1">
                         <thead>
                             <tr>
                                 <th className="font-medium text-left pl-1 w-1/4">EMPLOYEE</th>
@@ -52,9 +52,8 @@ export default async function Dashboard() {
                                 <th className="font-medium text-left hidden sm:table-cell w-1/6">STATUS</th>
                                 <th className="font-medium text-left w-1/6">#</th>
                             </tr>
+                            <tr className="h-1"></tr>
                         </thead>
-
-                        <tr className="h-2"></tr>
 
                         <tbody>
                             {employees.map((employee: EmployeeProps ) => (

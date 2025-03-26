@@ -10,7 +10,7 @@ export async function POST(request: Request) {
         if (!token) {
             return NextResponse.json({ error: "Invalid request.", status: 401 });
         }
-        console.log(token)
+
         const {
             duration,
             start_time,
@@ -25,9 +25,10 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: "Failed to create settings employee.", status: 401 })
         }
 
-        const intervals = filterIntervals(intervalsArray);
-
+        // const intervals = filterIntervals(intervalsArray);
+        // console.log(intervalsArray)
         const closeDays = filterCloseDays(closeDaysArray);
+        console.log(intervalsArray)
         // return NextResponse.json({ error: '', status: 200 });
         const response = await fetch(uri_schedule, {
             method: 'POST',
@@ -40,7 +41,7 @@ export async function POST(request: Request) {
               "duration": duration,
               "start_time": start_time,
               "end_time": end_time,
-              "intervals": intervals,
+              "intervals": intervalsArray,
               "saturday_off": saturday_off,
               "close_days": closeDays,
               "employee_id": employeeId,
@@ -48,12 +49,12 @@ export async function POST(request: Request) {
         })
 
         const data = await response.json()
-
+console.log(data)
         if (!response.ok) {
             return NextResponse.json({ error: data.message }, { status: response.status });
         }
       
-        return NextResponse.json({ error: '', status: response.status });
+        return NextResponse.json({ error: closeDays, status: response.status });
     } catch (error) {
         console.log(error)
     }
