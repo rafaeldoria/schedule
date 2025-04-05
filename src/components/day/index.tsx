@@ -1,5 +1,6 @@
+import { ModalContext } from "@/providers/scheduleModal";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 interface DateProps {
     date: string;
@@ -7,6 +8,8 @@ interface DateProps {
 }
 
 export function Day({date, index}: DateProps) {
+    const { visible } = useContext(ModalContext)
+
     const getColorTop = (index: number) => {
         const statusMap: Record<number, string> = {
             0: "bg-red-500",
@@ -23,8 +26,8 @@ export function Day({date, index}: DateProps) {
     const [colorTop, setColorTop] = useState(getColorTop(index))
 
     return (
-        <div className="relative flex flex-col items-center justify-center 
-            font-medium border rounded-md border-blue-300 bg-white p-3"
+        <div className={`${visible ? "" : "relative"} flex flex-col items-center justify-center 
+            font-medium border rounded-md border-blue-300 bg-white p-3`}
         >
 
         <div className={`absolute top-0 left-0 w-full h-1 ${colorTop} rounded-t-md`}></div>

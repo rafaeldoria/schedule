@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { ModalContext } from "@/providers/scheduleModal";
+import { useContext, useEffect, useState } from "react";
 
 interface TimeProps {
     time: string;
     status: number;
+    date: string;
 }
 
-export function Time({time, status}: TimeProps) {
+export function Time({time, status, date}: TimeProps) {
     const getStatusData = (status: number) => {
         const statusMap: Record<number, { color: string; statusDescription: string }> = {
             1: { color: "text-green-700", statusDescription: "OPEN" },
@@ -16,9 +18,16 @@ export function Time({time, status}: TimeProps) {
         return statusMap[status] || { color: "", statusDescription: "" }
     };
 
+    const { handleModalVisible, handleDateTime } = useContext(ModalContext)
+
     const [statusData, setDataStatus] = useState(getStatusData(status))
 
     const timeFormatted = time.split(":").slice(0, 2).join(":")
+
+    function handleOpenModal() {
+        handleModalVisible()
+        handleDateTime(date + ' - ' + time)
+    }
 
     return (
         <div
@@ -29,7 +38,12 @@ export function Time({time, status}: TimeProps) {
 
             <p>{timeFormatted}</p>
 
-            <button className={`text-sm ${statusData.color} `}>{statusData.statusDescription}</button>
+            <button 
+                className={`text-sm ${statusData.color} `}
+                onClick={handleOpenModal}
+            >
+                {statusData.statusDescription}
+            </button>
         </div>
     )
 }

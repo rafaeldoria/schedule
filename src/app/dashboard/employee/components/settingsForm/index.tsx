@@ -74,8 +74,10 @@ export function SettingsEmployee({ employeeId } : { employeeId: string}) {
                     setValue('end_time', employeeSettings.settings.end_time);
                     setValue('saturday_off', employeeSettings.settings.saturday_off ? '1' : '0');
 
-                    const closeDaysArray = employeeSettings.settings.close_days.split(",").map(Number);
-                    setValue('closeDaysArray', closeDaysArray);
+                    if (employeeSettings.settings.close_days != "") {
+                        const closeDaysArray = employeeSettings.settings.close_days.split(",").map(Number);
+                        setValue('closeDaysArray', closeDaysArray);
+                    }
 
                     if (employeeSettings.intervals) {
                         const mappedIntervals = employeeSettings.intervals.map((interval : { start_time: string; end_time: string; id?: string }) => ({
@@ -99,6 +101,7 @@ export function SettingsEmployee({ employeeId } : { employeeId: string}) {
     async function handleSaveSettings(formData: FormData) {
         try {
             const updatedFormData = { ...formData, employeeId };
+
             const response = await fetch('/api/employee/settings', {
                 method: "POST",
                 headers: { 

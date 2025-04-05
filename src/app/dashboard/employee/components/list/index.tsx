@@ -112,9 +112,9 @@ export function ListEmployee({ employee, token }: { employee: EmployeeProps; tok
                         <Link href={`/dashboard/employee/settings/${employee.id}`} className="mr-2" title="settings">
                             <IoSettingsSharp size={20} color="#5e5d5d" />
                         </Link>
-                        <button title="schedule">
+                        <Link href={`/dashboard/employee/schedule/${employee.id}`}>
                             <RiCalendarScheduleLine size={20} color="#742100" />
-                        </button>
+                        </Link>
                     </div>
                 )}
             </td>

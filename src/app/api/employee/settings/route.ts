@@ -5,6 +5,7 @@ const uri_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'settings' as string
 
 export async function POST(request: Request) {
     try {
+        
         const token = request.headers.get("Authorization")?.replace("Bearer ", "");
 
         if (!token) {
@@ -20,16 +21,13 @@ export async function POST(request: Request) {
             closeDaysArray,
             employeeId,
         } = await request.json();
-
+        
         if (!duration || !start_time || !end_time || !employeeId) {
             return NextResponse.json({ error: "Failed to create settings employee.", status: 401 })
         }
 
-        // const intervals = filterIntervals(intervalsArray);
-        // console.log(intervalsArray)
         const closeDays = filterCloseDays(closeDaysArray);
-        console.log(intervalsArray)
-        // return NextResponse.json({ error: '', status: 200 });
+        
         const response = await fetch(uri_schedule, {
             method: 'POST',
             headers: {
@@ -66,7 +64,7 @@ function filterIntervals(intervalsArray: Array<SettingsInterval>) {
 }
 
 function filterCloseDays(closeDaysArray: Array<number>) {
-    if (closeDaysArray.length === 0) {
+    if (closeDaysArray == undefined || closeDaysArray.length === 0) {
         return null
     }
 

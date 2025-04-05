@@ -1,10 +1,28 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
-const uri_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'generate' as string;
+const uri_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'settings/schedule-by-employee' as string;
+
+export async function GET(request: Request, { params }: { params: { employeeId: string } }) {
+    try {
+        const token = request.headers.get("Authorization")?.replace("Bearer ", "");
+
+        if (!token) {
+            return NextResponse.json({ error: "Invalid request.", status: 401 });
+        }
+
+        const employeeId = params.employeeId
+        console.log(employeeId)
+
+        return NextResponse.json({ schedule: '', status: 200 })
+
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 export async function POST(req: Request) {
     try {
+        console.log(uri_schedule)
         const body = await req.json();
 
         if (!body) {
@@ -29,7 +47,7 @@ export async function POST(req: Request) {
             "saturdayOff": body.saturdayOff ?? false,
             ...(body.break && { break: body.break })
         };
-
+console.log(uri_schedule)
         const response = await fetch(uri_schedule, {
             method: 'POST',
             headers: {'Content-type': 'application/json'},
@@ -37,7 +55,7 @@ export async function POST(req: Request) {
         })
         
         const data = await response.json()
-
+console.log(data.message)
         if (!response.ok) {
             return NextResponse.json({ error: data.message }, { status: response.status });
           }

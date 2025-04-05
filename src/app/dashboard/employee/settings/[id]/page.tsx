@@ -18,7 +18,7 @@ export default async function EmployeeSettings( { params }: { params: { id: stri
     })
 
     const data = await response.json()
-
+console.log(data)
     return (
         <Container>
             {data.employee ? (

@@ -19,7 +19,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     if (loading) return <p>Carregando...</p>;
 
     if (!authenticated) return null;
-
+console.log(authenticated)
     return (
         <>
             <Header />

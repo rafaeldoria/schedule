@@ -10,6 +10,6 @@ export interface EmployeeSettingProps {
 }
 
 export interface SettingsInterval {
-    start: string;
-    end: string;
+    start_time: string;
+    end_time: string;
 }

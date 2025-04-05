@@ -15,7 +15,7 @@ const Schedule = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const uri_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'generate' as string;
+      const uri_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'generator' as string;
       try {
         const myHeaders = new Headers();
         myHeaders.append("Accept", "application/json");
