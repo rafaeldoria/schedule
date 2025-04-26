@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const uri_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'settings/schedule-by-employee' as string;
+const uri_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'schedule/employee' as string;
 
 export async function GET(request: Request, { params }: { params: { employeeId: string } }) {
     try {
@@ -11,8 +11,6 @@ export async function GET(request: Request, { params }: { params: { employeeId: 
         }
 
         const employeeId = params.employeeId
-console.log(employeeId)
-        return NextResponse.json({ schedule: '', status: 403 });
 
         const response = await fetch(`${uri_schedule}/${employeeId}`, {
             method: 'GET',
@@ -29,7 +27,7 @@ console.log(employeeId)
             return NextResponse.json({ error: ret.message, status: response.status })
         }
 
-        return NextResponse.json({ employeeSettings: ret.data, status: 200 });
+        return NextResponse.json({ schedule: ret.data.generated_schedule, status: 200 });
     } catch (error) {
         console.log(error)
     }

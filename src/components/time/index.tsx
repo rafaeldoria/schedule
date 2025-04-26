@@ -10,9 +10,9 @@ interface TimeProps {
 export function Time({time, status, date}: TimeProps) {
     const getStatusData = (status: number) => {
         const statusMap: Record<number, { color: string; statusDescription: string }> = {
-            1: { color: "text-green-700", statusDescription: "OPEN" },
+            0: { color: "text-green-700", statusDescription: "OPEN" },
+            1: { color: "text-blue-700", statusDescription: "SCHEDULED" },
             2: { color: "text-red-700", statusDescription: "CLOSED" },
-            3: { color: "text-blue-700", statusDescription: "SCHEDULED" },
         };
     
         return statusMap[status] || { color: "", statusDescription: "" }

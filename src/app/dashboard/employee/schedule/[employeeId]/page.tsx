@@ -119,28 +119,34 @@ export default function Schedule( { params }: { params: { employeeId: string }} 
             ) : (
                 <div className="w-full max-w-7xl mx-auto px-2 py-4 mt-6 bg-slate-300 border-none rounded-md">
                     <div className="flex items-center justify-center">
-                        {Object.entries(schedule).map(([date, details], index) => details.totalTimes > 0 && (
-                            <section 
-                                key={date}
-                                className={`flex-1 bg-sky-200 p-2 flex-col gap-2 shadow-md rounded-md mx-1 
-                                    ${isVisible ? "flex" : "hidden"}
-                                md:flex`}
-                            >
-                                <Day
-                                    date={date}
-                                    index={index}
-                                />
+                        {Object.entries(schedule).map(([date, details]) => {
+                            if (!details || details.totalTimes === 0) {
+                                return null;
+                            }
 
-                                {details.times.map((item, index) => (
-                                    <Time
-                                    key={`${date}-${index}`}
-                                    time={item.time}
-                                    status={item.status}
-                                    date={date}
+                            return (
+                                <section 
+                                    key={date}
+                                    className={`flex-1 bg-sky-200 p-2 flex-col gap-2 shadow-md rounded-md mx-1 
+                                        ${isVisible ? "flex" : "hidden"}
+                                    md:flex`}
+                                >
+                                    <Day
+                                        date={date}
+                                        index={Object.keys(schedule).indexOf(date)}
                                     />
-                                ))}
-                            </section>
-                        ))}
+
+                                    {details.times && details.times.length > 0 && details.times.map((item, index) => (
+                                        <Time
+                                            key={`${date}-${index}`}
+                                            time={item.time}
+                                            status={item.status}
+                                            date={date}
+                                        />
+                                    ))}
+                                </section>
+                            );
+                        })}
                     </div>
                 </div>
             )}
