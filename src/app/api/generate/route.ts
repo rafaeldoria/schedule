@@ -16,21 +16,20 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: "Failed to generate new schedule." }, { status: 401 })
         }
 
-        if (!body.recurrence || !body.startTime || !body.endTime || !body.duration) {
+        if (!body.recurrence || !body.start_time || !body.end_time || !body.duration) {
             return NextResponse.json({ error: "Failed to generate new schedule." }, { status: 401 })
         }
 
         const params = JSON.stringify({
             "recurrence": body.recurrence,
-            "startTime": body.startTime,
-            "endTime": body.endTime,
+            "start_time": body.start_time,
+            "end_time": body.end_time,
             "duration": body.duration,
             "interval": body.interval ?? 0,
-            "saturdayOff": body.saturdayOff ?? false,
+            "saturday_off": body.saturday_off ?? false,
             ...(body.break && { break: body.break })
         });
 
-console.log(params)
         const response = await fetch(uri_schedule, {
             method: 'POST',
             headers: {
@@ -42,7 +41,7 @@ console.log(params)
         })
         
         const data = await response.json()
-console.log(data.message)
+
         if (!response.ok) {
             return NextResponse.json({ error: data.message }, { status: response.status });
           }

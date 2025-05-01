@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 
-const uri_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'schedule/employee' as string;
+const uri_employee_generate_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'employee/generate-schedule' as string;
 
-export async function GET(request: Request, { params }: { params: { employeeId: string } }) {
+export async function POST(request: Request, { params }: { params: { employeeId: string } }) {
     try {
         const token = request.headers.get("Authorization")?.replace("Bearer ", "");
 
@@ -11,14 +11,19 @@ export async function GET(request: Request, { params }: { params: { employeeId: 
         }
 
         const employeeId = params.employeeId
+        const weekly = 2
 
-        const response = await fetch(`${uri_schedule}/${employeeId}`, {
-            method: 'GET',
+        const response = await fetch(uri_employee_generate_schedule, {
+            method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token
-            }
+            },
+            body: JSON.stringify({
+                "recurrence": weekly,
+                "employee_id": employeeId
+            }),
         })
 
         const ret = await response.json()
@@ -27,7 +32,7 @@ export async function GET(request: Request, { params }: { params: { employeeId: 
             return NextResponse.json({ error: ret.message, status: response.status })
         }
 
-        return NextResponse.json({ schedule: ret.data.generated_schedule, status: 200 });
+        return NextResponse.json({ schedule: ret.data.generated_schedule, status: response.status });
     } catch (error) {
         console.log(error)
     }

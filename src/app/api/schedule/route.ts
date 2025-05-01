@@ -22,7 +22,6 @@ export async function GET(request: Request, { params }: { params: { employeeId: 
 
 export async function POST(req: Request) {
     try {
-        console.log(uri_schedule)
         const body = await req.json();
 
         if (!body) {
@@ -47,7 +46,7 @@ export async function POST(req: Request) {
             "saturdayOff": body.saturdayOff ?? false,
             ...(body.break && { break: body.break })
         };
-console.log(uri_schedule)
+
         const response = await fetch(uri_schedule, {
             method: 'POST',
             headers: {'Content-type': 'application/json'},
@@ -55,7 +54,7 @@ console.log(uri_schedule)
         })
         
         const data = await response.json()
-console.log(data.message)
+
         if (!response.ok) {
             return NextResponse.json({ error: data.message }, { status: response.status });
           }

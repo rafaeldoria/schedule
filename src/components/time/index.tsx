@@ -5,9 +5,11 @@ interface TimeProps {
     time: string;
     status: number;
     date: string;
+    employeeId: string;
+    scheduleDetailsId?: string;
 }
 
-export function Time({time, status, date}: TimeProps) {
+export function Time({time, status, date, employeeId, scheduleDetailsId}: TimeProps) {
     const getStatusData = (status: number) => {
         const statusMap: Record<number, { color: string; statusDescription: string }> = {
             0: { color: "text-green-700", statusDescription: "OPEN" },
@@ -18,7 +20,7 @@ export function Time({time, status, date}: TimeProps) {
         return statusMap[status] || { color: "", statusDescription: "" }
     };
 
-    const { handleModalVisible, handleDateTime } = useContext(ModalContext)
+    const { handleModalVisible, handleDateTime, handleEmployeeId, handleScheduleDetailsId } = useContext(ModalContext)
 
     const [statusData, setDataStatus] = useState(getStatusData(status))
 
@@ -27,6 +29,8 @@ export function Time({time, status, date}: TimeProps) {
     function handleOpenModal() {
         handleModalVisible()
         handleDateTime(date + ' - ' + time)
+        handleEmployeeId(employeeId)
+        handleScheduleDetailsId(scheduleDetailsId || '')
     }
 
     return (

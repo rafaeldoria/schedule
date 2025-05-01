@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { cookies } from 'next/headers'
 
 const uri_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'employee' as string;
 

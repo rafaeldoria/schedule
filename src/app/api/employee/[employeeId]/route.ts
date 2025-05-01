@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 const uri_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'employee' as string;
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, { params }: { params: { employeeId: string } }) {
     try {
         const token = request.headers.get("Authorization")?.replace("Bearer ", "")
 
@@ -10,13 +10,13 @@ export async function GET(request: Request, { params }: { params: { id: string }
             return NextResponse.json({ error: "Invalid request.", status: 404 })
         }
 
-        const id = params.id
+        const employeeId = params.employeeId
 
-        if (!id) {
+        if (!employeeId) {
             return NextResponse.json({ error: "Failed to update employee.", status: 401 })
         }
 
-        const response = await fetch(`${uri_schedule}/${id}`, {
+        const response = await fetch(`${uri_schedule}/${employeeId}`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',

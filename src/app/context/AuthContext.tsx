@@ -47,7 +47,7 @@ export function AuthProvider({ children }: { children: React.ReactNode}) {
     
             const data = await response.json();
             
-            console.log(data) //testar login direcionamento
+            console.log(data.token) //testar login direcionamento
             if (data.status == 'error') {
                 throw new Error(data.message)
             }

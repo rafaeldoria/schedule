@@ -4,7 +4,6 @@ import { useAuth } from "@/app/context/AuthContext";
 import { Container } from "@/components/container";
 import { Day } from "@/components/day";
 import { Time } from "@/components/time";
-import { EmployeeSettingProps, SettingsInterval } from "@/utils/employeeSetting.type";
 import { useEffect, useState } from "react";
 import { IoIosAddCircle } from "react-icons/io";
 
@@ -17,7 +16,7 @@ export default function Schedule( { params }: { params: { employeeId: string }} 
     useEffect(() => {
         async function getEmployeeSchedule() {
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/employee/schedule/${employeeId}`, {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/schedule/employee/${employeeId}`, {
                     method: 'GET',
                     credentials: 'include',
                     cache: 'no-store',
@@ -45,8 +44,8 @@ export default function Schedule( { params }: { params: { employeeId: string }} 
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("Authorization", `Bearer ${authenticated}`);
 
-            const response = await fetch(`/api/employee/settings/${employeeId}`, {
-                method: 'GET',
+            const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/employee/generate-schedule/${employeeId}`, {
+                method: 'POST',
                 credentials: 'include',
                 headers: myHeaders,
             })
@@ -56,46 +55,11 @@ export default function Schedule( { params }: { params: { employeeId: string }} 
                 throw new Error(data.message)
             }
 
-            const settings: EmployeeSettingProps = data.employeeSettings.settings
-            const intervals: SettingsInterval[]= data.employeeSettings.intervals.map(
-                ({ start_time, end_time }: { start_time: string; end_time: string }) => ({
-                    startTime: start_time,
-                    endTime: end_time,
-                })
-            );
-
-            const raw = JSON.stringify({
-                "recurrence": 2, //weekly always at this beginning
-                "startTime": settings.start_time,
-                "endTime": settings.end_time,
-                "duration": settings.duration,
-                "interval": 0,
-                "break": intervals,
-                "saturdayOff": settings.saturday_off
-            });
-
-            // const uri_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'generate' as string;
-            const responseS = await fetch(`/api/generate`, {
-                method: 'POST',
-                headers: myHeaders,
-                body: raw,
-            })
-
-           const schedule = await responseS.json()
-            if (schedule.error) {
-                console.log(schedule.error)
-      
-                return
-            }
-
-            console.log(schedule)
-            setSchedule(schedule)
+            setSchedule(data.schedule)
         } catch (error :any) {
             console.log(error)
         }
     }
-
-    
 
     return (
         <Container>
@@ -142,6 +106,8 @@ export default function Schedule( { params }: { params: { employeeId: string }} 
                                             time={item.time}
                                             status={item.status}
                                             date={date}
+                                            employeeId={employeeId}
+                                            scheduleDetailsId={item.scheduleDetailsId || ''}
                                         />
                                     ))}
                                 </section>

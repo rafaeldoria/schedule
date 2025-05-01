@@ -52,7 +52,7 @@ export function SettingsEmployee({ employeeId } : { employeeId: string}) {
     useEffect(() => {
         async function getEmployeeSettings() {
             try {
-                const response = await fetch(`/api/employee/settings/${employeeId}`, {
+                const response = await fetch(`/api/settings/employee/${employeeId}`, {
                     method: 'GET',
                     credentials: 'include',
                     headers: { 
@@ -102,7 +102,7 @@ export function SettingsEmployee({ employeeId } : { employeeId: string}) {
         try {
             const updatedFormData = { ...formData, employeeId };
 
-            const response = await fetch('/api/employee/settings', {
+            const response = await fetch('/api/settings', {
                 method: "POST",
                 headers: { 
                     "Content-Type": "application/json",

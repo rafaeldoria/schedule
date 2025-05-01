@@ -1,11 +1,9 @@
-import { SettingsInterval } from "@/utils/employeeSetting.type";
 import { NextResponse } from "next/server";
 
 const uri_schedule = process.env.NEXT_PUBLIC_API_SCHEDULE + 'settings' as string;
 
 export async function POST(request: Request) {
     try {
-        
         const token = request.headers.get("Authorization")?.replace("Bearer ", "");
 
         if (!token) {
@@ -47,7 +45,7 @@ export async function POST(request: Request) {
         })
 
         const data = await response.json()
-console.log(data)
+
         if (!response.ok) {
             return NextResponse.json({ error: data.message }, { status: response.status });
         }
@@ -56,11 +54,6 @@ console.log(data)
     } catch (error) {
         console.log(error)
     }
-}
-
-function filterIntervals(intervalsArray: Array<SettingsInterval>) {
-    const validIntervals = intervalsArray.filter(interval => interval.start !== "" && interval.end !== "");
-    return JSON.stringify(Object.assign({}, validIntervals));
 }
 
 function filterCloseDays(closeDaysArray: Array<number>) {
